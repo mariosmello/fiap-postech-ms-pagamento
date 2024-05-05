@@ -8,7 +8,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 
-class CreateOrder
+class CreateInvoice
 {
     public function handle(Request $request, array $products) :Order
     {

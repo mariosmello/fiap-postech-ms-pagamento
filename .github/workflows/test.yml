@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      DB_DATABASE: test_pedidos
+      DB_DATABASE: test_pagamentos
 
     steps:
       - name: Checkout code
@@ -22,7 +22,7 @@ jobs:
         with:
           mongodb-username: default
           mongodb-password: secret
-          mongodb-db: test_pedidos
+          mongodb-db: test_pagamentos
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
