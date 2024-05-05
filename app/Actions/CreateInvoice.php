@@ -13,6 +13,7 @@ class CreateInvoice
         $invoice = new \App\Models\Invoice();
         $invoice->status = 'pending';
         $invoice->pix = $pix;
+        $invoice->total = $request->get('total');
         $invoice->save();
 
         $customer = new \App\Models\Customer();
