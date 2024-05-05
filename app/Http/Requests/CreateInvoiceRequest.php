@@ -22,9 +22,8 @@ class CreateInvoiceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'products' => 'required|array',
-            'products.*.id' => 'required',
-            'products.*.qty' => 'required',
+            'order' => 'required',
+            'total' => 'required|decimal:1,2',
         ];
     }
 }

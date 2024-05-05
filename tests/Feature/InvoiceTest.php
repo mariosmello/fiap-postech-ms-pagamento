@@ -10,50 +10,15 @@ beforeEach(function () {
     ], env('JWT_SECRET'), 'HS256');
 });
 
-it('can create a order', function () {
+it('can create a invoice', function () {
 
     $data = [
-        'products' => [
-            [
-                'id' => 1,
-                'qty' => 1,
-            ],
-            [
-                'id' => 2,
-                'qty' => 2,
-            ]
-        ]
+        'order' => '1234',
+        'total' => 100.20,
     ];
 
-    $this->mock(\App\Actions\FindProducts::class, function (\Mockery\MockInterface $mock) use ($data) {
-        $mock->shouldReceive('handle')->once()
-            ->with($data)
-            ->andReturn([
-                'data' => [
-                    [
-                        'id' => 1,
-                        'name' => 'Product 1',
-                        'price' => 10.10,
-                        'category' => [
-                            'id' => 1,
-                            'name' => 'Category 1',
-                        ]
-                    ],
-                    [
-                        'id' => 2,
-                        'name' => 'Product 2',
-                        'price' => 10.00,
-                        'category' => [
-                            'id' => 2,
-                            'name' => 'Category 2',
-                        ]
-                    ]
-                ]
-            ]);
-    });
-
     // 201 http created
-    $this->postJson('/api/orders', $data, [
+    $this->postJson('/api/invoices', $data, [
         'Authorization' => 'Bearer ' . $this->token
     ])->assertStatus(201);
 
