@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateInvoiceRequest extends FormRequest
+class WebhookUpdatePixRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +22,8 @@ class CreateInvoiceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'order' => 'required',
-            'total' => 'required|decimal:1,2',
+            'invoice' => 'required',
+            'status' => 'required',
         ];
     }
 }

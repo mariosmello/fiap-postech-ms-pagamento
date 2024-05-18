@@ -4,7 +4,7 @@ use Firebase\JWT\JWT;
 use Illuminate\Validation\UnauthorizedException;
 
 beforeEach(function () {
-    $this->request = \Illuminate\Support\Facades\Request::create(route('orders.store'));
+    $this->request = \Illuminate\Support\Facades\Request::create(route('invoices.store'));
     $this->next = function () {
         return response('');
     };
