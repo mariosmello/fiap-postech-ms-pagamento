@@ -1,25 +1,22 @@
 <?php
 
-uses(\Illuminate\Foundation\Testing\DatabaseMigrations::class);
+use Illuminate\Support\Facades\Queue;
 
-beforeEach(function () {
-    $this->token = \Firebase\JWT\JWT::encode([
-        'sub' => '1',
-        'name' => fake()->name(),
-        'email' => fake()->email(),
-    ], env('JWT_SECRET'), 'HS256');
-});
+uses(\Illuminate\Foundation\Testing\DatabaseMigrations::class);
 
 it('can create a invoice', function () {
 
     $data = [
         'order' => '1234',
         'total' => 100.20,
+        'customer_id' => 1,
+        'customer_name' => fake()->name()
     ];
 
-    // 201 http created
-    $this->postJson('/api/invoices', $data, [
-        'Authorization' => 'Bearer ' . $this->token
-    ])->assertStatus(201);
+    \App\Jobs\OrderCreated::dispatch($data)->onQueue('payment_updates');
+
+    $invoice = \App\Models\Invoice::where('order', $data['order'])->first();
+    expect($invoice->count())->toBe(1);
+
 
 });

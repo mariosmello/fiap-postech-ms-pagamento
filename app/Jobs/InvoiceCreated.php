@@ -21,4 +21,8 @@ class InvoiceCreated implements ShouldQueue
     {
         $this->invoice = $invoice;
     }
+
+    public function handle(): void
+    {
+    }
 }

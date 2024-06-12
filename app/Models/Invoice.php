@@ -13,11 +13,6 @@ class Invoice extends Model
     protected $collection = 'invoices';
     protected $fillable = ['id', 'order', 'customer', 'status', 'price' ,'pix'];
 
-    public function order(): EmbedsOne
-    {
-        return $this->embedsOne(Order::class);
-    }
-
     public function customer(): EmbedsOne
     {
         return $this->embedsOne(Customer::class);

@@ -21,7 +21,7 @@ class ProcessWebhookStatus implements ShouldQueue
         $this->invoice = [
             'id' => $invoice->getIdAttribute(),
             'status' => $invoice->status,
-            'order' => $invoice->order->id
+            'order' => $invoice->order
         ];
     }
 }

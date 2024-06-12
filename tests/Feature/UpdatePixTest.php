@@ -10,11 +10,8 @@ it('can update a pix payment invoice', function () {
 
     $invoice = new \App\Models\Invoice();
     $invoice->status = 'pending';
+    $invoice->order = '123';
     $invoice->save();
-
-    $order = new \App\Models\Order();
-    $order->id = "123";
-    $invoice->order()->save($order);
 
     $updatePix = new \App\Actions\UpdatePix();
     $updatePix->handle([
