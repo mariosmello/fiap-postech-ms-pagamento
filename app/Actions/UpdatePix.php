@@ -16,7 +16,7 @@ class UpdatePix
         $invoice->status = $data['status'];
         $invoice->save();
 
-        ProcessWebhookStatus::dispatch($invoice)->delay(2)->onQueue('payments');
+        ProcessWebhookStatus::dispatch($invoice)->delay(10)->onQueue('payments');
     }
 
 }

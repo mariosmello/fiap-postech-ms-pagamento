@@ -3,26 +3,24 @@
 namespace App\Actions;
 
 use App\Models\Invoice;
-use Illuminate\Http\Request;
-
 
 class CreateInvoice
 {
-    public function handle(Request $request, array $pix) :Invoice
+    public function handle(array $order, array $pix) :Invoice
     {
         $invoice = new \App\Models\Invoice();
         $invoice->status = 'pending';
         $invoice->pix = $pix;
-        $invoice->total = $request->get('total');
+        $invoice->total = $order['total'];
         $invoice->save();
 
         $customer = new \App\Models\Customer();
-        $customer->id = $request->get('auth')['sub'];
-        $customer->name = $request->get('auth')['name'];
+        $customer->id = $order['customer_id'];
+        $customer->name = $order['customer_name'];
         $invoice->customer()->save($customer);
 
         $order = new \App\Models\Order();
-        $order->id = $request->get('order');
+        $order->id = $order['order'];
         $invoice->order()->save($order);
 
         return $invoice;
