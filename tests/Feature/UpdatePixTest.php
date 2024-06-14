@@ -19,7 +19,7 @@ it('can update a pix payment invoice', function () {
         'status' => 'paid'
     ]);
 
-    Queue::assertPushedOn('payments', \App\Jobs\ProcessWebhookStatus::class);
+    Queue::assertPushedOn('order_updates', \App\Jobs\InvoicePaid::class);
 
     $invoice = \App\Models\Invoice::where('_id',$invoice->getIdAttribute())->firstOrFail();
     expect($invoice->status)->toBe('paid');

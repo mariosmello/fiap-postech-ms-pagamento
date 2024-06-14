@@ -8,6 +8,15 @@ class CreateInvoice
 {
     public function handle(array $order, array $pix) :Invoice
     {
+
+        $duplicatedInvoice = Invoice::where('total', $order['total'])
+            ->where('customer.id', $order['customer_id'])
+            ->count();
+
+        if ($duplicatedInvoice) {
+            throw new \Exception('Pedido duplicado para este cliente');
+        }
+
         $invoice = new \App\Models\Invoice();
         $invoice->status = 'pending';
         $invoice->pix = $pix;

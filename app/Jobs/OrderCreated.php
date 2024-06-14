@@ -25,15 +25,28 @@ class OrderCreated implements ShouldQueue
      */
     public function handle(CreatePix $createPix, CreateInvoice $createInvoice): void
     {
-        $pix = $createPix->handle();
-        $invoice = $createInvoice->handle($this->order, $pix);
 
-        InvoiceCreated::dispatch([
-            'id' => $invoice->getIdAttribute(),
-            'pix' => $invoice->pix,
-            'order' => $this->order['order'],
-        ])->onQueue('order_updates')
-            ->delay(5);
+        try {
+
+            $pix = $createPix->handle();
+            $invoice = $createInvoice->handle($this->order, $pix);
+
+            InvoiceCreated::dispatch([
+                'id' => $invoice->getIdAttribute(),
+                'pix' => $invoice->pix,
+                'order' => $this->order['order'],
+            ])->onQueue('order_updates')
+                ->delay(5);
+
+        } catch (\Exception $exception) {
+
+            InvoiceCreationFailed::dispatch(
+                $this->order['order'],
+                $exception->getMessage()
+            )->onQueue('order_updates')
+                ->delay(5);
+
+        }
 
     }
 }
