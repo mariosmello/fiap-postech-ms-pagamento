@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use App\Jobs\InvoicePaid;
 use App\Jobs\ProcessWebhookStatus;
 use App\Models\Invoice;
 use Illuminate\Http\Request;
@@ -16,7 +17,7 @@ class UpdatePix
         $invoice->status = $data['status'];
         $invoice->save();
 
-        ProcessWebhookStatus::dispatch($invoice)->delay(10)->onQueue('payments');
+        InvoicePaid::dispatch($invoice)->delay(5)->onQueue('order_updates');
     }
 
 }
