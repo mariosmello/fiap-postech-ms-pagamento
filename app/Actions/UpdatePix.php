@@ -2,11 +2,9 @@
 
 namespace App\Actions;
 
-use App\Jobs\ProcessWebhookStatus;
+use App\Jobs\InvoicePaid;
+use App\Jobs\InvoicePaymentFailed;
 use App\Models\Invoice;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
-
 
 class UpdatePix
 {
@@ -16,7 +14,16 @@ class UpdatePix
         $invoice->status = $data['status'];
         $invoice->save();
 
-        ProcessWebhookStatus::dispatch($invoice)->delay(2)->onQueue('payments');
+        if ('paid' === $data['status']) {
+            InvoicePaid::dispatch($invoice)
+                ->delay(5)
+                ->onQueue('order_updates');
+        } else {
+            InvoicePaymentFailed::dispatch($invoice)
+                ->delay(5)
+                ->onQueue('order_updates');
+        }
+
     }
 
 }

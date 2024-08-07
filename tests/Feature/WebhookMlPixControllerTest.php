@@ -14,11 +14,8 @@ it('cat create a webhook update with invalid request', function () {
 
     $invoice = new \App\Models\Invoice();
     $invoice->status = 'pending';
+    $invoice->order = '123';
     $invoice->save();
-
-    $order = new \App\Models\Order();
-    $order->id = "123";
-    $invoice->order()->save($order);
 
     $this->postJson('/api/webhook/ml/pix', [
         'invoice' => $invoice->getIdAttribute(),

@@ -10,11 +10,8 @@ it('can update a pix payment invoice', function () {
 
     $invoice = new \App\Models\Invoice();
     $invoice->status = 'pending';
+    $invoice->order = '123';
     $invoice->save();
-
-    $order = new \App\Models\Order();
-    $order->id = "123";
-    $invoice->order()->save($order);
 
     $updatePix = new \App\Actions\UpdatePix();
     $updatePix->handle([
@@ -22,7 +19,7 @@ it('can update a pix payment invoice', function () {
         'status' => 'paid'
     ]);
 
-    Queue::assertPushedOn('payments', \App\Jobs\ProcessWebhookStatus::class);
+    Queue::assertPushedOn('order_updates', \App\Jobs\InvoicePaid::class);
 
     $invoice = \App\Models\Invoice::where('_id',$invoice->getIdAttribute())->firstOrFail();
     expect($invoice->status)->toBe('paid');
